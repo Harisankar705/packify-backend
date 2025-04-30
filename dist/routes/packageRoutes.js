@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const packageRepository_1 = require("../repository/packageRepository");
+const package_1 = require("../models/package");
+const packageService_1 = require("../services/packageService");
+const packageController_1 = require("../controller/packageController");
+const protect_1 = __importDefault(require("../middleware/protect"));
+const packageRouter = express_1.default.Router();
+const packageRepository = new packageRepository_1.PackageRepository(package_1.packageModel);
+const packageService = new packageService_1.PackageService(packageRepository);
+const packageController = new packageController_1.PackageController(packageService);
+packageRouter.post('/', (0, protect_1.default)(['admin']), packageController.createPackage.bind(packageController));
+packageRouter.put('/:id', (0, protect_1.default)(['admin']), packageController.updatePackage.bind(packageController));
+packageRouter.delete('/:id', (0, protect_1.default)(['admin']), packageController.deletePackage.bind(packageController));
+packageRouter.get('/', packageController.getAllPackages.bind(packageController));
+packageRouter.get('/:id', packageController.getPackageById.bind(packageController));
+exports.default = packageRouter;

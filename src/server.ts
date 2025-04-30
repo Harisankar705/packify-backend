@@ -11,12 +11,24 @@
   const app = express();
   app.use(express.json());
   dbConnection();
+  const allowedOrigins = [
+    'http://localhost:8080',
+    'https://packify-peach.vercel.app',
+  ];
+  
   app.use(cors({
-    origin: [
-      'http://localhost:8080',
-    ],
-    credentials: true
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   }));
+  
   app.use('/api/auth', authRoutes); 
   app.use('/api/users', userRoutes); 
   app.use('/api/bookings', bookingRoutes); 

@@ -1,0 +1,44 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRepository = void 0;
+const user_1 = require("../models/user");
+class UserRepository {
+    constructor(userModel = user_1.UserModel) {
+        this.userModel = userModel;
+    }
+    findByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.userModel.findOne({ email }).exec();
+        });
+    }
+    find() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.userModel.find().exec();
+        });
+    }
+    createUser(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.userModel.create(data);
+        });
+    }
+    findById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.userModel.findById(id).exec();
+        });
+    }
+    updateUser(id, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.userModel.findByIdAndUpdate(id, data, { new: true }).exec();
+        });
+    }
+}
+exports.UserRepository = UserRepository;
