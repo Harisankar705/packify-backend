@@ -1,10 +1,12 @@
 import  bcrypt  from 'bcryptjs';
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv'
+dotenv.config()
 import { Request, Response } from "express";
 import { IAuthController, IAuthService } from "../interfaces/interfaces";
 import { OAuth2Client } from "google-auth-library";
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
+const client = new OAuth2Client(process.env.AUTH_GOOGLE_ID);
+console.log()
 export class AuthController implements IAuthController {
   private authService: IAuthService;
   constructor(authService: IAuthService) {
@@ -25,11 +27,8 @@ export class AuthController implements IAuthController {
       const { token } = req.body;
 
       
-      if (!token) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Token is required!" });
-      }
+      if (!token) { res.status(400).json({ success: false, message: "Token is required!" })
+        return;}
 
       const ticket = await client.verifyIdToken({
         idToken: token,
@@ -39,9 +38,10 @@ export class AuthController implements IAuthController {
       const payload = ticket.getPayload();
 
       if (!payload) {
-        return res
+         res
           .status(401)
-          .json({ success: false, message: "Invalid Google token!" });
+          .json({ success: false, message: "Invalid Google token!" })
+          return;
       }
 
       const { user, accessToken } =

@@ -11,5 +11,6 @@ const authController = new AuthController(authService);
 authRouter.post('/register', authController.register.bind(authController));
 authRouter.post('/login', authController.login.bind(authController));
 authRouter.post('/adminlogin', authController.adminLogin.bind(authController));
+authRouter.post('/google', authController.googleLogin.bind(authController));
 
 export default authRouter;

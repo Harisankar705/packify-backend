@@ -28,6 +28,7 @@ export class UserController implements IUserController {
         res.status(400).json({ message: 'User ID not found in the request' });
         return;
       }
+      console.log('in updateprofile',req.body)
       const updated = await this.userService.update(req.user.id, req.body);
       if (!updated) {
         res.status(404).json({ message: 'User not found for update' });
